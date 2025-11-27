@@ -34,10 +34,8 @@ import ghidra.program.model.address.Address;
 import ghidra.program.model.address.AddressOutOfBoundsException;
 import ghidra.program.model.address.AddressOverflowException;
 import ghidra.program.model.address.AddressSet;
-import ghidra.program.model.address.AddressSetView;
 import ghidra.program.model.lang.LanguageCompilerSpecPair;
 import ghidra.program.model.listing.Program;
-import ghidra.program.model.mem.Memory;
 import ghidra.program.model.mem.MemoryAccessException;
 import ghidra.program.model.symbol.SourceType;
 import ghidra.util.exception.CancelledException;
@@ -124,7 +122,7 @@ public class CTRLoader extends AbstractLibrarySupportLoader {
 					program.getMemory().setInt(target, base);
 				} catch (MemoryAccessException e) {
 					e.printStackTrace();
-				};
+				}
 			}
 		}
 		
@@ -148,7 +146,7 @@ public class CTRLoader extends AbstractLibrarySupportLoader {
 			}
 		}
 		
-		String funcs[] = {"OnLoad", "OnExit", "OnUnresolved"};
+		String[] funcs = {"OnLoad", "OnExit", "OnUnresolved"};
 		reader.setPointerIndex(0xa4);
 		for (int i = 0; i < 2; i++) {
 			int func = reader.readNextInt();
@@ -164,7 +162,7 @@ public class CTRLoader extends AbstractLibrarySupportLoader {
 		
 		int importPatchesOffset = reader.readInt(0xf8);
 		int importPatchesSize = reader.readInt(0xfc);
-		List<PatchEntry> importPatches = new ArrayList<PatchEntry>();
+		List<PatchEntry> importPatches = new ArrayList<>();
 		
 		reader.setPointerIndex(importPatchesOffset);
 		for (int i = 0; i < importPatchesSize; i++) {
@@ -189,7 +187,7 @@ public class CTRLoader extends AbstractLibrarySupportLoader {
 					program.getMemory().setInt(target, base);
 				} catch (MemoryAccessException e) {
 					e.printStackTrace();
-				};
+				}
 			}
 		}
 		
