@@ -16,7 +16,6 @@
 package ctr;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -140,7 +139,7 @@ public class CTRLoader extends AbstractLibrarySupportLoader {
 		
 		for (NamedExportEntry entry : namedExportTable) {
 			int base = DecodeSegOffset(segTable, entry.getSegOffset());
-			String name = reader.readTerminatedString(entry.getNameOffset(), '\0');
+			String name = reader.readAsciiString(entry.getNameOffset());
 			try {
 				Address func = program.getAddressFactory().getDefaultAddressSpace().getAddress(base);
 				program.getFunctionManager().createFunction(name, func, new AddressSet(func), SourceType.ANALYSIS);
@@ -201,7 +200,7 @@ public class CTRLoader extends AbstractLibrarySupportLoader {
 		for (int i = 0; i < importNamedSize; i++) {
 			int nameAddr = reader.readNextInt();
 			int addr = reader.readNextInt();
-			String name = reader.readTerminatedString(nameAddr, '\0');
+			String name = reader.readAsciiString(nameAddr);
 			int target = DecodeSegOffset(segTable, reader.readInt(addr));
 			try {
 				if (reader.readInt(target - 4) == 0xE51FF004) {
